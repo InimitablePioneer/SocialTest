@@ -1,8 +1,10 @@
 package com.test.kakaotest.common.login.service;
 
 
+import com.test.kakaotest.common.util.RestApiRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -33,7 +35,7 @@ public class KakaoLoginService {
         headers.setContentType(MediaType.valueOf("application/x-www-form-urlencoded;charset=UTF-8"));
 
         //send Oauth request to kakao server
-
+        RestApiRequest.request(HttpMethod.POST, url, setOauthBody(code), headers);
 
 
 

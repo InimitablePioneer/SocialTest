@@ -12,11 +12,10 @@ public class RestApiRequest {
         RestTemplate restTemplate = new RestTemplate();
         //request Message
         HttpEntity<?> requestMessage = new HttpEntity<>(body, headers);
-        //request to kakao server by post method that we made already
+        //request to kakao server by post method that we made already -> get response from kakao server
         HttpEntity<String> response = restTemplate.postForEntity(url, requestMessage, String.class);
-        // parsing the response that we get from kakao server
-        ObjectMapper objectMapper = new ObjectMapper();
 
+        return response.getBody();
 
 
     }
