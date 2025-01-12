@@ -1,6 +1,10 @@
 package com.test.kakaotest.common.login.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.kakaotest.common.login.dto.KakaoOauthDto;
 import com.test.kakaotest.common.util.RestApiRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import java.util.Map;
 
 @Service
 public class KakaoLoginService {
@@ -22,12 +28,20 @@ public class KakaoLoginService {
     @Value("${kakao.redirect_url}")
     private String redirectUri;
 
-    public void login(String code) {
+    @Value()
 
-        getOauth(code);
+    public void login(String code) throws JsonProcessingException {
+        //request a token to kakao server -> and get a token
+        KakaoOauthDto oauth = getOauth(code);
+
+
+
+
+
+
     }
 
-    public void getOauth(String code) {
+    public KakaoOauthDto getOauth(String code) throws JsonProcessingException {
         String url = tokenUri;
 
         //setting the Header
@@ -35,10 +49,12 @@ public class KakaoLoginService {
         headers.setContentType(MediaType.valueOf("application/x-www-form-urlencoded;charset=UTF-8"));
 
         //send Oauth request to kakao server
-        RestApiRequest.request(HttpMethod.POST, url, setOauthBody(code), headers);
+        String response = RestApiRequest.request(HttpMethod.POST, url, setOauthBody(code), headers);
 
-
-
+        //parsing the response that we got from kakao server
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+        return objectMapper.readValue(response, KakaoOauthDto.class);
 
     }
 
@@ -50,6 +66,14 @@ public class KakaoLoginService {
         body.add("code", code);
         return body;
     }
+
+    private Map<String,Object> getUserInfo(KakaoOauthDto oauth) {
+
+
+
+    }
+
+
 
 
 
