@@ -28,11 +28,14 @@ public class KakaoLoginService {
     @Value("${kakao.redirect_url}")
     private String redirectUri;
 
-    @Value()
+    @Value("${kakao.userinfo-url}")
+    private String userInfoUri;
 
     public void login(String code) throws JsonProcessingException {
-        //request a token to kakao server -> and get a token
+
+        //request a token to kakao server with authorization code -> and get a token
         KakaoOauthDto oauth = getOauth(code);
+        Map<String,Object> userInfo = getUserInfo(oauth);
 
 
 
@@ -67,9 +70,23 @@ public class KakaoLoginService {
         return body;
     }
 
-    private Map<String,Object> getUserInfo(KakaoOauthDto oauth) {
+    private Map<String,Object> getUserInfo(KakaoOauthDto oauth) throws JsonProcessingException {
+        String url = userInfoUri;
+        //set the Header
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.valueOf("application/x-www-form-urlencoded;charset=UTF-8"));
+        headers.set("Authorization", "Bearer" + oauth.getAccess_token());
+        //send request to kakao server with token in order to get a user information
+        String response = RestApiRequest.request(HttpMethod.POST,url,null,headers);
+        //Parsing the response that we got
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 
+        return objectMapper.readValue(response, Map.class);
 
+    }
+
+    private void saveUser(Map<String,Object> userInfo) {
 
     }
 
