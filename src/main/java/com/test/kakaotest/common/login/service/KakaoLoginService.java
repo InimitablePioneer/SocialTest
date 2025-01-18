@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.kakaotest.common.login.dto.KakaoOauthDto;
+import com.test.kakaotest.common.user.entity.User;
 import com.test.kakaotest.common.util.RestApiRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -87,6 +88,9 @@ public class KakaoLoginService {
     }
 
     private void saveUser(Map<String,Object> userInfo) {
+        User user = new User(userInfo, "kakao");
+
+
 
     }
 
