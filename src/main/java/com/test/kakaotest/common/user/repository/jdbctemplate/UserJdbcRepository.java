@@ -10,7 +10,7 @@ public class UserJdbcRepository implements UserRepository {//implement crud
 
     @Override
     public User save(User user) {
-
+        String sql = "insert into users()"
     }
 
 
