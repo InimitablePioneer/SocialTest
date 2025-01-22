@@ -43,6 +43,7 @@ public class KakaoLoginService {
 
 
 
+
     }
 
     public KakaoOauthDto getOauth(String code) throws JsonProcessingException {
@@ -89,7 +90,8 @@ public class KakaoLoginService {
 
     private void saveUser(Map<String,Object> userInfo) {
         User user = new User(userInfo, "kakao");
-
+        if () {
+        }
 
 
     }
