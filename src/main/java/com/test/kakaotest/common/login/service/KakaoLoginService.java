@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.kakaotest.common.login.dto.KakaoOauthDto;
 import com.test.kakaotest.common.user.entity.User;
+import com.test.kakaotest.common.user.service.UserService;
 import com.test.kakaotest.common.util.RestApiRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import java.util.Map;
 @Service
 public class KakaoLoginService {
 
+    private final UserService userService;
     @Value("${kakao.token-uri}")
     private String tokenUri; //토큰을 요청하는 uri 이때 auth 코드와 함게 보내주어야한다
 
@@ -32,14 +34,16 @@ public class KakaoLoginService {
     @Value("${kakao.userinfo-url}")
     private String userInfoUri;
 
+    public KakaoLoginService(UserService userService) {
+        this.userService = userService;
+    }
+
     public void login(String code) throws JsonProcessingException {
 
         //request a token to kakao server with authorization code -> and get a token
         KakaoOauthDto oauth = getOauth(code);
         Map<String,Object> userInfo = getUserInfo(oauth);
-
-
-
+        saveUser(userInfo);
 
 
 
@@ -90,7 +94,8 @@ public class KakaoLoginService {
 
     private void saveUser(Map<String,Object> userInfo) {
         User user = new User(userInfo, "kakao");
-        if () {
+        if (true) {
+            userService.saveUser(user);
         }
 
 

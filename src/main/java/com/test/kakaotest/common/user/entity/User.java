@@ -1,8 +1,11 @@
 package com.test.kakaotest.common.user.entity;
 
+import lombok.Data;
+
 import java.util.Map;
 import java.util.UUID;
 
+@Data
 public class User {
     private Long userNum;
 
