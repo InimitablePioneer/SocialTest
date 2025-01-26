@@ -81,7 +81,7 @@ public class KakaoLoginService {
         //set the Header
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf("application/x-www-form-urlencoded;charset=UTF-8"));
-        headers.set("Authorization", "Bearer" + oauth.getAccess_token());
+        headers.set("Authorization", "Bearer " + oauth.getAccess_token());
         //send request to kakao server with token in order to get a user information
         String response = RestApiRequest.request(HttpMethod.POST,url,null,headers);
         //Parsing the response that we got

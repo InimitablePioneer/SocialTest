@@ -1,6 +1,7 @@
 package com.test.kakaotest.common.login.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.test.kakaotest.common.login.service.KakaoLoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +40,7 @@ public class KakaoLoginController {
     }
 
     @GetMapping("/login/kakao")
-    public void login(@RequestParam("code") String authorizationCode) {
+    public void login(@RequestParam("code") String authorizationCode) throws JsonProcessingException {
         kakaoLoginService.login(authorizationCode);
 
     }

@@ -9,5 +9,5 @@ public class KakaoOauthDto {
     private String refresh_token;
     private Integer expires_in;
     private String scope;
-    private Integer refresh_expires_in;
+    private Integer refresh_token_expires_in;
 }

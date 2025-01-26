@@ -23,8 +23,8 @@ public class User {
     public User(Map<String,Object> userInfo, String type) {
         this.uuid = UUID.randomUUID().toString();
         Map<String,Object> properties = (Map<String,Object>)userInfo.get("properties");
-        this.providerId = (Long)properties.get("providerId");
-        this.providerNickname = properties.get("providerNickname").toString();
+        this.providerId = (Long)properties.get("id");
+        this.providerNickname = properties.get("nickname").toString();
         this.profileUrl = properties.get("profile_image").toString();
         this.type = type;
     }
