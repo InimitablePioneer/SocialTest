@@ -3,6 +3,7 @@ package com.test.kakaotest.common.login.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.test.kakaotest.common.login.service.KakaoLoginService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -40,8 +41,8 @@ public class KakaoLoginController {
     }
 
     @GetMapping("/login/kakao")
-    public void login(@RequestParam("code") String authorizationCode) throws JsonProcessingException {
-        kakaoLoginService.login(authorizationCode);
+    public void login(@RequestParam("code") String authorizationCode, HttpServletRequest request) throws JsonProcessingException {
+        kakaoLoginService.login(authorizationCode, request);
 
     }
 }

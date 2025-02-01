@@ -7,8 +7,8 @@ import java.util.UUID;
 
 @Data
 public class User {
-    private Long userNum;
 
+    private Long userNum;
 
     //uuid 값 어케 줄건지 생각해보기
     private String uuid;
@@ -28,8 +28,6 @@ public class User {
         this.profileUrl = properties.get("profile_image").toString();
         this.type = type;
     }
-
-
 
 
 }

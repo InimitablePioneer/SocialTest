@@ -8,9 +8,13 @@ import com.test.kakaotest.common.login.dto.KakaoOauthDto;
 import com.test.kakaotest.common.user.entity.User;
 import com.test.kakaotest.common.user.service.UserService;
 import com.test.kakaotest.common.util.RestApiRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -38,12 +42,14 @@ public class KakaoLoginService {
         this.userService = userService;
     }
 
-    public void login(String code) throws JsonProcessingException {
+    public void login(String code,HttpServletRequest request) throws JsonProcessingException {
 
         //request a token to kakao server with authorization code -> and get a token
         KakaoOauthDto oauth = getOauth(code);
-        Map<String,Object> userInfo = getUserInfo(oauth);
+        Map<String,Object> userInfo = getUserInfo(oauth); //request a user information to kakao server with a token we get
+        setLoginSession(userInfo,request,oauth);
         saveUser(userInfo);
+
 
 
 
@@ -89,6 +95,16 @@ public class KakaoLoginService {
         objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 
         return objectMapper.readValue(response, Map.class);
+
+    }
+
+    private void setLoginSession(Map<String, Object> userInfo, HttpServletRequest request, KakaoOauthDto oauth) {
+        String userId = String.valueOf(userInfo.get("id"));
+        String nickname = ((Map) userInfo.get("properties")).get("nickname").toString();
+        HttpSession session = request.getSession();
+        session.setAttribute("userId", userId);
+        session.setAttribute("nickname", nickname);
+        session.setAttribute("KakaoAccessToken", oauth.getAccess_token());
 
     }
 
